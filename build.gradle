@@ -42,7 +42,7 @@ repositories {
 }
 
 allprojects {
-  group 'org.opensearch'
+  group 'org.opensearch.plugin'
   version = opensearch_version.tokenize('-')[0] + '.0'
   if (buildVersionQualifier) {
     version += "-${buildVersionQualifier}"
