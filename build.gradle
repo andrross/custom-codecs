@@ -192,6 +192,9 @@ integTest {
 testClusters.integTest {
     testDistribution = "ARCHIVE"
     plugin(project.tasks.bundlePlugin.archiveFile)
+    if (System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("linux")) {
+        jvmArgs '-XX:-UseContainerSupport'
+    }
 }
 
 tasks.withType(PublishToMavenRepository) {
@@ -210,5 +213,11 @@ task updateVersion {
         println "Setting version to ${newVersion}."
         // String tokenization to support -SNAPSHOT
         ant.replaceregexp(file:'build.gradle', match: '"opensearch.version", "\\d.*"', replace: '"opensearch.version", "' + newVersion.tokenize('-')[0] + '-SNAPSHOT"', flags:'g', byline:true)
+    }
+}
+
+tasks.withType(Test).configureEach {
+    if (System.getProperty("os.name").toLowerCase(Locale.ROOT).startsWith("linux")) {
+        jvmArgs '-XX:-UseContainerSupport'
     }
 }
